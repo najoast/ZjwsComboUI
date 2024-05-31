@@ -48,9 +48,11 @@
 		local function handleClick()
 			local outputElement = document:getElementById("output")
 			local mytext = document:getElementById("mytext")
-			print(mytext.value)
-			print("Button clicked!")
-			outputElement.innerHTML = require("Combo").AnalysisBuild({"关羽","诸葛亮","赵云","周瑜"})
+			local result = {}
+			for word in string.gmatch(mytext.value, "%S+") do
+				table.insert(result, word)
+			end
+			outputElement.innerHTML = require("Combo").AnalysisBuild(result)
 		end
 	
 		-- Set the onclick event handler using addEventListener
