@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>指尖无双 - 英雄列表</title>
+
+    <style>
+		body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+        }
+        .row-even {
+            background-color: #f9f9f9;
+        }
+        .SSR {
+            color: orange;
+        }
+        .SR {
+            color: purple;
+        }
+        .蜀 {
+            background-color: #dff0d8; /* 淡绿色 */
+        }
+        .魏 {
+            background-color: #f7f7e8; /* 淡草色 */
+        }
+        .吴 {
+            background-color: #fbe4e6; /* 淡红色 */
+        }
+        .群 {
+            background-color: #eeeeee; /* 淡灰色 */
+        }
+    </style>
+	<script src="js/fengari-web.js" type="text/javascript"></script>
+</head>
+<body>
+	<header></header>
+	<table id="heroesTable">
+		<thead>
+			<tr>
+				<th>英雄名</th>
+				<th>阵营</th>
+				<th>稀有度</th>
+				<th>大招</th>
+				<th>普攻</th>
+				<th>追击条件</th>
+				<th>追击效果</th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
+    <script type="application/lua">
+		local js = require "js"
+		local window = js.global
+		local document = window.document
+		local Heroes = require "Heroes"
+
+        function createRow(hero, index)
+            local row = document:createElement("tr")
+            if index % 2 == 0 then
+                row.className = "row-even"
+            end
+            row.className = row.className .. " " .. hero[2]
+            
+            for i, value in ipairs(hero) do
+                local cell = document:createElement("td")
+                if i == 3 then
+                    local span = document:createElement("span")
+                    span.textContent = value
+                    span.className = value
+                    cell:appendChild(span)
+                else
+                    cell.textContent = value
+                end
+                row:appendChild(cell)
+            end
+
+            return row
+        end
+
+        function populateTable()
+            local tbody = document:getElementById("heroesTable"):getElementsByTagName("tbody")[0]
+
+            for i, hero in ipairs(Heroes.GetArray()) do
+                local row = createRow(hero, i)
+                tbody:appendChild(row)
+            end
+        end
+
+        populateTable()
+    </script>
+</body>
+</html>
